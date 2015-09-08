@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "CoreData+MagicalRecord.h"
 @interface AppDelegate ()
 
 @end
@@ -17,6 +17,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [MagicalRecord setShouldDeleteStoreOnModelMismatch:YES];
+    [MagicalRecord setDefaultModelNamed:@"MovieStars.momd"];
+    [MagicalRecord setupCoreDataStack];
     return YES;
 }
 

@@ -38,7 +38,7 @@
                     <navigationItem key="navigationItem" id="SCM-8z-JnV"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="tableView" destination="SY7-yM-KmK" id="1sv-qP-KlA"/>
+                        <outlet property="listTable" destination="SY7-yM-KmK" id="1cp-bA-eqp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ctU-of-MYi" userLabel="First Responder" sceneMemberID="firstResponder"/>

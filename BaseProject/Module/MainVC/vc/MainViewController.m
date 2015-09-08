@@ -7,10 +7,13 @@
 //
 
 #import "MainViewController.h"
+#import "Stars+CoreDataProperties.h"
+#import "CoreData+MagicalRecord.h"
 
 @interface MainViewController ()<UITableViewDataSource,UITableViewDelegate,BaseAPIManagerCallBackDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *listTable;
 @property (nonatomic, strong) MovieListManager *movieListManager;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 @end
 
 @implementation MainViewController
@@ -18,6 +21,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
  
+    self.listTable.delegate = self;
+    self.listTable.dataSource = self;
     [self.movieListManager getMovieList];
 }
 
@@ -37,7 +42,12 @@
 
 - (void)managerDidSuccess :(BaseAPIManager *)manager
 {
-    
+    if ([manager isKindOfClass:[MovieListManager class]])
+    {
+        NSArray *array = [Stars MR_findAll];
+        self.dataArray = [NSMutableArray arrayWithArray:array];
+        [self.listTable reloadData];
+    }
 }
 - (void)managerDidFailed :(BaseAPIManager *)manager
 {
@@ -45,7 +55,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return self.dataArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -55,7 +65,8 @@
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    
+    Stars *star = [self.dataArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = star.name;
     return cell;
 }
 @end

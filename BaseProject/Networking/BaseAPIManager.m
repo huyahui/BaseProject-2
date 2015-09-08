@@ -10,6 +10,7 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "BaseAPI.h"
 
+static NSString * const kResponseErrorDomain = @"BPResponseErrorDomain";
 
 @interface BaseAPIManager ()
 
@@ -110,31 +111,27 @@
 
 - (void)successOnCallAPI :(BaseAPI *)baseApi withResponseObject:(id)responseObj
 {
-    NSArray *array = [responseObj objectForKey:@"subjects"];
-    
-    for (int i=0;i<array.count;i++)
+    if ([self.childDelegate respondsToSelector:@selector(didSuccessParseDataWithResponseObject:)])
     {
-        NSDictionary *dic = array[i];
-        
-      NSArray *pictures =  [dic objectForKey:@"casts"] ;
-        
-        for (int j=0; j<pictures.count; j++) {
-            NSDictionary *dict = pictures[j];
-        
-            NSString *name = [dict objectForKey:@"name"];
-          NSString *medium =   [[dict objectForKey:@"avatars"] objectForKey:@"medium"];
-            NSLog(@"%@",medium);
-            NSLog(@"%@",name);
-            
-        }
-        
+        [self.childDelegate didSuccessParseDataWithResponseObject:responseObj];
     }
     
+    if ([self.delegate respondsToSelector:@selector(managerDidSuccess:)])
+    {
+        [self.delegate managerDidSuccess:self];
+    }
 }
 
 - (void)failedOnCallAPI :(BaseAPI *)baseApi withError:(NSError *)error
 {
+    if ([self.childDelegate respondsToSelector:@selector(failWithError:)])
+    {
+        [self.childDelegate didFailedParseDataWithResponseObject:error];
+    }
     
+    if ([self.delegate respondsToSelector:@selector(managerDidFailed:)]) {
+        [self.delegate managerDidFailed:self];
+    }
 }
 
 @end
