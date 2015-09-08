@@ -8,23 +8,41 @@
 
 #import "MainViewController.h"
 
-@interface MainViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface MainViewController ()<UITableViewDataSource,UITableViewDelegate,BaseAPIManagerCallBackDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
+@property (nonatomic, strong) MovieListManager *movieListManager;
 @end
 
 @implementation MainViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+ 
+    [self.movieListManager getMovieList];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
+- (MovieListManager *)movieListManager
+{
+    if (!_movieListManager) {
+        _movieListManager = [[MovieListManager alloc]init];
+        _movieListManager.delegate = self;
+    }
+    
+    return _movieListManager;
+}
 
+- (void)managerDidSuccess :(BaseAPIManager *)manager
+{
+    
+}
+- (void)managerDidFailed :(BaseAPIManager *)manager
+{
+    
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 10;

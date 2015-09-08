@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "MovieListManager.h"
 @interface MainViewController : UIViewController
 
 @end
