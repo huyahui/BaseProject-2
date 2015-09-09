@@ -9,6 +9,8 @@
 #import "MainViewController.h"
 #import "Stars+CoreDataProperties.h"
 #import "CoreData+MagicalRecord.h"
+#import "AFHTTPRequestOperation.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface MainViewController ()<UITableViewDataSource,UITableViewDelegate,BaseAPIManagerCallBackDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *listTable;
@@ -53,6 +55,12 @@
 {
     
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 80;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.dataArray.count;
@@ -66,6 +74,8 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     Stars *star = [self.dataArray objectAtIndex:indexPath.row];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:star.image] placeholderImage:[UIImage imageNamed:@"yingxiao"]];
+    
     cell.textLabel.text = star.name;
     return cell;
 }
